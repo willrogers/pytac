@@ -1,24 +1,18 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [dev-packages]
-
 pytest = "*"
 pytest-cov = "*"
 python-coveralls = "*"
 mock = "*"
-pytest-flakes = "*"
-"pytest-pep8" = "*"
+"flake8" = "*"
 bpython = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
 
-
 [packages]
-
 numpy = "*"
 scipy = "*"

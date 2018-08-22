@@ -38,15 +38,15 @@ def simple_element(identity=1):
 
 @pytest.fixture
 def simple_element_and_lattice(simple_element, mock_cs):
-    l = pytac.lattice.Lattice(LATTICE, mock_cs, 1)
-    l.add_element(simple_element)
-    return simple_element, l
+    lat = pytac.lattice.Lattice(LATTICE, mock_cs, 1)
+    lat.add_element(simple_element)
+    return simple_element, lat
 
 
 def test_create_lattice():
-    l = pytac.lattice.Lattice(LATTICE, mock.MagicMock(), 1)
-    assert(len(l)) == 0
-    assert l.name == LATTICE
+    lat = pytac.lattice.Lattice(LATTICE, mock.MagicMock(), 1)
+    assert(len(lat)) == 0
+    assert lat.name == LATTICE
 
 
 def test_get_devices(simple_element_and_lattice):
@@ -107,12 +107,13 @@ def test_get_values(simple_element_and_lattice):
     lattice._cs.get.assert_called_with([RB_PV])
 
 
-@pytest.mark.parametrize('dtype,expected', (
+@pytest.mark.parametrize(
+    'dtype,expected', (
         (numpy.float64, numpy.array(DUMMY_ARRAY, dtype=numpy.float64)),
         (numpy.int32, numpy.array(DUMMY_ARRAY, dtype=numpy.int32)),
         (numpy.bool_, numpy.array((False, True, True), dtype=numpy.bool_)),
         (None, DUMMY_ARRAY)
-))
+    ))
 def test_get_values_returns_numpy_array_if_requested(simple_element_and_lattice, dtype, expected):
     element, lattice = simple_element_and_lattice
     values = lattice.get_values('family', 'x', pytac.RB, dtype=dtype)
@@ -146,10 +147,10 @@ def test_s_position(simple_element_and_lattice):
 
 
 def test_get_s_throws_exception_if_element_not_in_lattice():
-    l = pytac.lattice.Lattice(LATTICE, mock.MagicMock(), 1)
+    lat = pytac.lattice.Lattice(LATTICE, mock.MagicMock(), 1)
     element = pytac.element.Element(1, 1.0, 'Quad')
     with pytest.raises(pytac.lattice.LatticeException):
-        l.get_s(element)
+        lat.get_s(element)
 
 
 def test_get_family_s(simple_element_and_lattice):

@@ -164,8 +164,10 @@ def load(mode, control_system=None, directory=None):
             from pytac import epics
             control_system = epics.EpicsControlSystem()
     except ImportError:
-        print(('To load a lattice using the default control system, please'
-                ' install cothread.'), file=sys.stderr)
+        print(
+            ('To load a lattice using the default control system, please'
+             ' install cothread.'), file=sys.stderr
+        )
         return None
     if directory is None:
         directory = os.path.join(os.path.dirname(os.path.abspath(__file__)),

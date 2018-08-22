@@ -11,7 +11,8 @@ install:
   - pipenv install --dev
 
 script:
-  - pipenv run python -m pytest --cov=pytac --pep8 --flakes
+  - pipenv run python -m pytest --cov=pytac
+  - pipenv run flake8
 
 after_success:
   - coveralls

@@ -1,0 +1,11 @@
+# This file is still required as readthedocs doesn't yet support Pipfile.
+# See https://github.com/rtfd/readthedocs.org/issues/3181
+numpy
+scipy
+cothread
+pytest
+pytest-cov
+flake8
+mock
+python-coveralls
+sphinx_rtd_theme

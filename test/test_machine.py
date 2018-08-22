@@ -23,7 +23,8 @@ def test_load_lattice_using_default_dir():
     assert len(lat) == 2143
 
 
-@pytest.mark.parametrize('ring_mode,n_elements,length', [
+@pytest.mark.parametrize(
+    'ring_mode,n_elements,length', [
         ('VMX', 2143, 561.571),
         ('DIAD', 2145, 561.571)
     ])
@@ -34,7 +35,8 @@ def test_load_lattice(ring_mode, n_elements, length):
     assert (lattice.get_length() - length) < EPS
 
 
-@pytest.mark.parametrize('ring_mode,n_bpms', [
+@pytest.mark.parametrize(
+    'ring_mode,n_bpms', [
         ('VMX', 173),
         ('DIAD', 173)
     ])
@@ -50,18 +52,20 @@ def test_get_pv_names(ring_mode, n_bpms):
         assert re.match('SR.*HBPM.*SLOW:DISABLED', pv)
 
 
-@pytest.mark.parametrize('ring_mode,n_bpms', [
+@pytest.mark.parametrize(
+    'ring_mode,n_bpms', [
         ('VMX', 173),
         ('DIAD', 173)
     ])
 def test_load_bpms(ring_mode, n_bpms):
     lattice = get_lattice(ring_mode)
     bpms = lattice.get_elements('BPM')
+    bpm_fields = {
+        'x', 'y', 'enabled', 'x_fofb_disabled', 'x_sofb_disabled',
+        'y_fofb_disabled', 'y_sofb_disabled'
+    }
     for bpm in bpms:
-        assert set(bpm.get_fields()) == set(
-                ('x', 'y', 'enabled', 'x_fofb_disabled', 'x_sofb_disabled',
-                 'y_fofb_disabled', 'y_sofb_disabled')
-        )
+        assert set(bpm.get_fields()) == bpm_fields
         assert re.match('SR.*BPM.*X', bpm.get_pv_name('x', pytac.RB))
         with pytest.raises(pytac.device.HandleException):
             bpm.get_pv_name('x', pytac.SP)
@@ -70,7 +74,8 @@ def test_load_bpms(ring_mode, n_bpms):
     assert bpms[-1].cell == 24
 
 
-@pytest.mark.parametrize('ring_mode,n_drifts', [
+@pytest.mark.parametrize(
+    'ring_mode,n_drifts', [
         ('VMX', 1308),
         ('DIAD', 1311)
     ])
@@ -80,7 +85,8 @@ def test_load_drift_elements(ring_mode, n_drifts):
     assert len(drifts) == n_drifts
 
 
-@pytest.mark.parametrize('ring_mode,n_quads', [
+@pytest.mark.parametrize(
+    'ring_mode,n_quads', [
         ('VMX', 248),
         ('DIAD', 248)
     ])
@@ -95,7 +101,8 @@ def test_load_quadrupoles(ring_mode, n_quads):
         assert re.match('SR.*Q.*:SETI', device.sp_pv)
 
 
-@pytest.mark.parametrize('ring_mode,n_q1b,n_q1d', [
+@pytest.mark.parametrize(
+    'ring_mode,n_q1b,n_q1d', [
         ('VMX', 34, 12),
         ('DIAD', 34, 12)
     ])
@@ -107,7 +114,8 @@ def test_load_quad_family(ring_mode, n_q1b, n_q1d):
     assert len(q1d) == n_q1d
 
 
-@pytest.mark.parametrize('ring_mode,n_correctors', [
+@pytest.mark.parametrize(
+    'ring_mode,n_correctors', [
         ('VMX', 173),
         ('DIAD', 172)
     ])
@@ -119,15 +127,14 @@ def test_load_correctors(ring_mode, n_correctors):
     assert len(vcm) == n_correctors
     for element in hcm:
         # each one has b0, h_fofb_disabled and h_sofb_disabled fields.
-        assert set(('b0', 'h_sofb_disabled', 'h_fofb_disabled')
-                   ).issubset(element.get_fields())
+        assert {'b0', 'h_sofb_disabled', 'h_fofb_disabled'}.issubset(element.get_fields())
     for element in vcm:
         # each one has a0, v_fofb_disabled and v_sofb_disabled fields.
-        assert set(('a0', 'v_sofb_disabled', 'v_fofb_disabled')
-                   ).issubset(element.get_fields())
+        assert {'a0', 'v_sofb_disabled', 'v_fofb_disabled'}.issubset(element.get_fields())
 
 
-@pytest.mark.parametrize('ring_mode,n_squads', [
+@pytest.mark.parametrize(
+    'ring_mode,n_squads', [
         ('VMX', 98),
         ('DIAD', 98)
     ])
@@ -142,7 +149,9 @@ def test_load_squads(ring_mode, n_squads):
         assert re.match('SR.*SQ.*:SETI', device.sp_pv)
 
 
-@pytest.mark.parametrize('ring_mode', ('VMX', 'DIAD'))
+@pytest.mark.parametrize(
+    'ring_mode', ('VMX', 'DIAD')
+)
 def test_cell(ring_mode):
     lattice = get_lattice(ring_mode)
     # there are squads in every cell
