@@ -17,3 +17,4 @@ pytest-lazy-fixture = "*"
 [packages]
 numpy = "*"
 scipy = "*"
+pyepics = "*"
